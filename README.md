@@ -7,8 +7,9 @@ This script provides a graphical user interface (GUI) to rotate the display and 
 - Python 3
 - Tkinter
 - `xrandr` and `xinput` (for X11)
-- `gnome-randr` and `libinput` (for Wayland)
+- [`gnome-randr`](https://github.com/maxwellainatchi/gnome-randr-rust) and `libinput` (for Wayland)
 - `sudo` privileges for modifying udev rules
+- optional [`gdm-settings`](https://github.com/gdm-settings/gdm-settings) for login screen
 
 ## Installation
 
@@ -88,6 +89,7 @@ python3 gptouch.py
 
 - The script requires `sudo` privileges to modify udev rules.
 - Users should be in the `input` group to avoid needing `sudo` for `libinput`.
+- Use [`gdm-settings`](https://github.com/gdm-settings/gdm-settings) to apply rotation on login screen
 
 ### Example Output from `gnome-randr`
 
