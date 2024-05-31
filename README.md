@@ -1,4 +1,4 @@
-# Touchscreen Rotation and Calibration Matrix Script
+# Touchscreen Rotation and Calibration Matrix Script for Gnome
 
 This script provides a graphical user interface (GUI) to rotate the display and calibrate the touchscreen input matrix on both X11 and Wayland environments automatically.
 
