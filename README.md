@@ -1,23 +1,21 @@
 # Touchscreen Rotation and Calibration Matrix Script for Gnome
 
-This script provides a graphical user interface (GUI) to rotate the display and calibrate the touchscreen input matrix on both X11 and Wayland environments automatically.
+This script provides a terminal interface to rotate the display and calibrate the touchscreen input matrix on both X11 and Wayland environments automatically.
 
 ## Requirements
 
 - Python 3
-- Tkinter
 - `xrandr` and `xinput` (for X11)
-- [`gnome-randr`](https://github.com/maxwellainatchi/gnome-randr-rust) and `libinput` (for Wayland)
+- `gnome-randr` and `libinput` (for Wayland)
 - `sudo` privileges for modifying udev rules
-- optional [`gdm-settings`](https://github.com/gdm-settings/gdm-settings) for login screen
 
 ## Installation
 
 ### Debian-based Distributions
 
-1. **Install Python and Tkinter**:
+1. **Install Python**:
     ```bash
-    sudo apt-get install python3 python3-tk
+    sudo apt-get install python3
     ```
 
 2. **Install X11 Dependencies** (if using X11):
@@ -39,9 +37,9 @@ This script provides a graphical user interface (GUI) to rotate the display and 
 
 ### Arch-based Distributions
 
-1. **Install Python and Tkinter**:
+1. **Install Python**:
     ```bash
-    sudo pacman -S python tk
+    sudo pacman -S python
     ```
 
 2. **Install X11 Dependencies** (if using X11):
@@ -88,28 +86,7 @@ python3 gptouch.py
 ## Notes
 
 - The script requires `sudo` privileges to modify udev rules.
-- Users should be in the `input` group to avoid needing `sudo` for `libinput`.
-- Use [`gdm-settings`](https://github.com/gdm-settings/gdm-settings) to apply rotation on login screen
-
-### Example Output from `gnome-randr`
-
-Example output to identify the active output:
-```
-supports-mirroring: true
-layout-mode: physical
-supports-changing-layout-mode: false
-global-scale-required: false
-legacy-ui-scaling-factor: 1
-
-logical monitor 0:
-x: 0, y: 0, scale: 1, rotation: left, primary: yes
-associated physical monitors:
-    HDMI-1 RTK RTK FHD HDR  demoset-1
-
-HDMI-1 RTK RTK FHD HDR  demoset-1
-              1920x1080@60.000 1920x1080    60.00*+      [x1.00+, x2.00]
-              ...
-```
+- Users should be in the `input` group to avoid needing `sudo` for these operations.
 
 ### Troubleshooting
 
