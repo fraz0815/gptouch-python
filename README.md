@@ -1,6 +1,6 @@
 # Touchscreen Rotation and Calibration Matrix Script for Gnome
 
-This script provides a terminal interface to rotate the display and calibrate the touchscreen input matrix on both X11 and Wayland environments automatically.
+This script provides a terminal interface to rotate the display and calibrate the touchscreen input matrix on both Wayland and X11 (experimental/broken, see Troubleshooting) environments automatically.
 
 ## Requirements
 
@@ -95,6 +95,7 @@ python3 gptouch.py
 - **Dependency Errors**: Ensure all required packages are installed.
 - **Display Not Found**: Verify that your display is correctly connected and detected by the system.
 - **Touchscreen Device Not Found**: Check the connections and ensure the device is recognized by the system.
+- **X11**: xrandr and gnome-randr handle left/right different, also xrandr needs storing - use [`arandr`](https://christian.amsuess.com/tools/arandr/)
 
 ## License
 
