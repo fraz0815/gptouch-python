@@ -22,9 +22,9 @@ def check_dependencies():
 
 def get_active_output_x11():
     try:
-        result = subprocess.run(["xrandr"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        result = subprocess.run(["xrandr", "--listactivemonitors"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output = result.stdout.decode()
-        matches = re.findall(r'(\w+)\sconnected', output)
+        matches = re.findall(r'\d+: \+\*?(\S+)', output)
         if matches:
             return matches[0]
         else:
@@ -56,9 +56,9 @@ def get_active_output():
 
 def get_touchscreen_device_x11():
     try:
-        result = subprocess.run(["xinput", "--list"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        result = subprocess.run(["xinput", "list", "--name-only"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output = result.stdout.decode()
-        matches = re.findall(r'↳ (.*Touchscreen.*)id=\d+', output)
+        matches = re.findall(r'(.*TouchScreen.*)', output, re.IGNORECASE)
         if matches:
             return matches[0]
         else:
@@ -98,7 +98,16 @@ def select_orientation():
     return int(choice)
 
 def update_calibration_matrix(choice):
-    calibration_matrices = {
+    #gnome-randr and xrandr handle left/right different
+    if os.environ.get("XDG_SESSION_TYPE") == "x11":
+        calibration_matrices = {
+        1: ("normal", "1 0 0 0 1 0"),
+        2: ("right", "0 -1 1 1 0 0"),
+        3: ("left", "0 1 0 -1 0 1"),
+        4: ("inverted", "-1 0 1 0 -1 1")
+    }
+    else:
+        calibration_matrices = {
         1: ("normal", "1 0 0 0 1 0"),
         2: ("left", "0 1 0 -1 0 1"),
         3: ("right", "0 -1 1 1 0 0"),
