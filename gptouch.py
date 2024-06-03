@@ -141,6 +141,7 @@ def main():
     subprocess.run(["sudo", "tee", "/etc/udev/rules.d/99-touchscreen-orientation.rules"], input=f'ATTRS{{name}}=="{TOUCHSCREEN_DEVICE_DEFAULT}", ENV{{LIBINPUT_CALIBRATION_MATRIX}}="{calibration_matrix}"'.encode())
 
     print()
+    print("On X11 switch touchscreen off/on instead of reboot")
     reboot = input("Reboot now? (y/n): ").strip().lower()
     if reboot == 'y':
         subprocess.run(["sudo", "reboot"])
