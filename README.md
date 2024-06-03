@@ -95,7 +95,8 @@ python3 gptouch.py
 - **Dependency Errors**: Ensure all required packages are installed.
 - **Display Not Found**: Verify that your display is correctly connected and detected by the system.
 - **Touchscreen Device Not Found**: Check the connections and ensure the device is recognized by the system.
-- **X11**: xrandr and gnome-randr handle left/right different, also xrandr needs storing - use [`arandr`](https://christian.amsuess.com/tools/arandr/)
+- **X11**: xrandr and gnome-randr handle left/right different (fixed), power your device off/on instead of rebooting
+- **xrandr** needs storing - use [`arandr`](https://christian.amsuess.com/tools/arandr/)
 
 ## License
 
