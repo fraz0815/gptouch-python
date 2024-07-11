@@ -8,6 +8,7 @@ This script provides a terminal interface to rotate the display and calibrate th
 - `xrandr` and `xinput` (for X11)
 - [`gnome-randr`](https://github.com/maxwellainatchi/gnome-randr-rust) and `libinput` (for Wayland)
 - `sudo` privileges for modifying udev rules
+- Users should be in the input group to avoid needing sudo for these operations
 - optional [`gdm-settings`](https://github.com/gdm-settings/gdm-settings) for login screen
 
 ## Installation
@@ -35,7 +36,9 @@ This script provides a terminal interface to rotate the display and calibrate th
       ```bash
       cargo install gnome-randr
       ```
-
+5. **Add User to the input group**:
+   `sudo usermod -a -G input USERNAME`
+   
 ### Arch-based Distributions
 
 1. **Install Python**:
@@ -59,7 +62,9 @@ This script provides a terminal interface to rotate the display and calibrate th
       ```bash
       cargo install gnome-randr
       ```
-
+5. **Add User to the input group**:
+   `sudo usermod -a -G input USERNAME`
+   
 ## Usage
 
 Run the script using Python:
