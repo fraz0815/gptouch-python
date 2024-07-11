@@ -36,8 +36,11 @@ This script provides a terminal interface to rotate the display and calibrate th
       ```bash
       cargo install gnome-randr
       ```
+      
 5. **Add User to the input group**:
-   `sudo usermod -a -G input USERNAME`
+    ```bash
+      sudo usermod -a -G input USERNAME
+    ```
    
 ### Arch-based Distributions
 
@@ -63,7 +66,9 @@ This script provides a terminal interface to rotate the display and calibrate th
       cargo install gnome-randr
       ```
 5. **Add User to the input group**:
-   `sudo usermod -a -G input USERNAME`
+      ```bash
+      sudo usermod -aG input USERNAME
+      ```
    
 ## Usage
 
