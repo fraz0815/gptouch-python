@@ -5,7 +5,6 @@ This script provides a terminal interface to rotate the display and calibrate th
 ## Requirements
 
 - Python 3
-- ~~`xrandr` and `xinput` (for X11)~~
 - [`gnome-randr`](https://github.com/maxwellainatchi/gnome-randr-rust) and `libinput` (for Wayland)
 - `sudo` privileges for modifying udev rules
 - Users should be in the input group to avoid needing sudo for these operations
@@ -20,7 +19,7 @@ This script provides a terminal interface to rotate the display and calibrate th
     sudo apt-get install python3
     ```
 
-2. **Install Wayland Dependencies** (if using Wayland):
+2. **Install Wayland Dependencies**
     ```bash
     sudo apt-get install libinput-tools
     ```
@@ -44,7 +43,7 @@ This script provides a terminal interface to rotate the display and calibrate th
     sudo pacman -S python
     ```
 
-2. **Install Wayland Dependencies** (if using Wayland):
+2. **Install Wayland Dependencies**
     ```bash
     sudo pacman -S libinput
     ```
@@ -69,8 +68,8 @@ python3 gptouch.py
 
 ### Script Flow
 
-1. The script checks for the required dependencies (~~`xrandr`, `xinput`~~, `gnome-randr`, and `libinput`).
-2. ~~It determines the active display output based on the session type (`X11` or Wayland).~~
+1. The script checks for the required dependencies (~~`xrandr`, `xinput`,~~ `gnome-randr`, and `libinput`).
+2. ~~It determines the active display output based on the session type (X11 or Wayland).~~
 3. It identifies the connected touchscreen device.
 4. It prompts the user to select the desired screen orientation.
 5. It applies the selected screen orientation.
@@ -85,9 +84,8 @@ python3 gptouch.py
 - 4: Inverted (upside down)
 
 ## Notes
-
+- Users should be in the `input` group to avoid needing `sudo` for `libinnput`.
 - The script requires `sudo` privileges to modify udev rules.
-- Users should be in the `input` group to avoid needing `sudo` for these operations.
 - Use [`gdm-settings`](https://github.com/gdm-settings/gdm-settings) to apply rotation on login screen
 
 ### Troubleshooting
