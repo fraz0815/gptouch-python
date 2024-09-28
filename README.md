@@ -1,6 +1,6 @@
 # Touchscreen Rotation and Calibration Matrix Script for Gnome
 
-This script provides a terminal interface to rotate the display and calibrate the touchscreen input matrix Wayland ~~and X11~~ environments automatically.
+This script provides a terminal interface to rotate the display and calibrate the touchscreen input matrix on Wayland ~~and X11~~ environments automatically.
 
 ## Requirements
 
