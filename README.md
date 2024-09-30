@@ -25,7 +25,11 @@ This script provides a terminal interface to rotate the display and calibrate th
     ```
 
 3. **Install `gnome-randr`**:
-    - `gnome-randr` can be installed using Cargo, the Rust package manager. First, ensure you have Rust and Cargo installed. Follow the instructions at [rust-lang.org](https://www.rust-lang.org/tools/install).
+    - `gnome-randr` can be installed using Cargo, the Rust package manager. First, ensure you have Rust and Cargo installed. Follow the instructions at [rust-lang.org](https://www.rust-lang.org/tools/install), e.g.:
+     ```bash
+      curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+    ```
+     
     - Once Rust and Cargo are installed, you can install `gnome-randr` by running:
       ```bash
       cargo install gnome-randr
@@ -49,7 +53,11 @@ This script provides a terminal interface to rotate the display and calibrate th
     ```
 
 3. **Install `gnome-randr`**:
-    - `gnome-randr` can be installed using Cargo, the Rust package manager. First, ensure you have Rust and Cargo installed. Follow the instructions at [rust-lang.org](https://www.rust-lang.org/tools/install).
+    - `gnome-randr` can be installed using Cargo, the Rust package manager. First, ensure you have Rust and Cargo installed. Follow the instructions at [rust-lang.org](https://www.rust-lang.org/tools/install), e.g.:
+       ```bash
+      curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+        ```
+       
     - Once Rust and Cargo are installed, you can install `gnome-randr` by running:
       ```bash
       cargo install gnome-randr
