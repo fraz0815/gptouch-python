@@ -91,7 +91,7 @@ python3 gptouch.py
 - 4: Inverted (upside down)
 
 ## Notes
-- Gnome 48 introduces its own xrand-like tool:[`gdctl`]([https://gitlab.gnome.org/GNOME/mutter/-/merge_requests/4190)
+- Gnome 48 introduces its own xrand-like tool:[`gdctl`](https://gitlab.gnome.org/GNOME/mutter/-/merge_requests/4190)
 - expect this tool to be non-functinal (maybe obsolete) on Gnome 48 release 
 - Users should be in the `input` group to avoid needing `sudo` for `libinnput`.
 - The script requires `sudo` privileges to modify udev rules.
