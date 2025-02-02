@@ -1,4 +1,4 @@
-# Touchscreen Rotation and Calibration Matrix Script for Gnome
+# Touchscreen Rotation and Calibration Matrix Script for Gnome (< 48, see Notes)
 
 This script provides a terminal interface to rotate the display and calibrate the touchscreen input matrix on Wayland ~~and X11~~ environments automatically.
 
@@ -26,15 +26,14 @@ This script provides a terminal interface to rotate the display and calibrate th
 
 3. **Install `gnome-randr`**:
     - `gnome-randr` can be installed using Cargo, the Rust package manager. First, ensure you have Rust and Cargo installed. Follow the instructions at [rust-lang.org](https://www.rust-lang.org/tools/install), e.g.:
-     ```bash
-      curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-    ```
-     
+       ```bash
+        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+        ```
+       
     - Once Rust and Cargo are installed, you can install `gnome-randr` by running:
       ```bash
       cargo install gnome-randr
-      ```
-      
+      ```      
 4. **Add User to the input group**:
     ```bash
       sudo usermod -a -G input USERNAME
@@ -55,7 +54,7 @@ This script provides a terminal interface to rotate the display and calibrate th
 3. **Install `gnome-randr`**:
     - `gnome-randr` can be installed using Cargo, the Rust package manager. First, ensure you have Rust and Cargo installed. Follow the instructions at [rust-lang.org](https://www.rust-lang.org/tools/install), e.g.:
        ```bash
-      curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
         ```
        
     - Once Rust and Cargo are installed, you can install `gnome-randr` by running:
@@ -92,6 +91,8 @@ python3 gptouch.py
 - 4: Inverted (upside down)
 
 ## Notes
+- Gnome 48 introduces its own xrand-like tool:[`gdctl`]([https://gitlab.gnome.org/GNOME/mutter/-/merge_requests/4190)
+- expect this tool to be non-functinal (maybe obsolete) on Gnome 48 release 
 - Users should be in the `input` group to avoid needing `sudo` for `libinnput`.
 - The script requires `sudo` privileges to modify udev rules.
 - Use [`gdm-settings`](https://github.com/gdm-settings/gdm-settings) to apply rotation on login screen
