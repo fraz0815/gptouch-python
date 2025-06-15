@@ -1,4 +1,4 @@
-# Touchscreen Rotation and Calibration Matrix Script for Gnome (< 48, see Notes)
+# Touchscreen Rotation and Calibration Matrix Script for Gnome (<= 48, see Notes)
 
 This script provides a terminal interface to rotate the display and calibrate the touchscreen input matrix on Wayland ~~and X11~~ environments automatically.
 
@@ -6,9 +6,9 @@ This script provides a terminal interface to rotate the display and calibrate th
 
 - Python 3
 - [`gnome-randr`](https://github.com/maxwellainatchi/gnome-randr-rust) and `libinput` (for Wayland)
+- Users should be in the input group to avoid needing sudo for `libinput` operations
 - `sudo` privileges for modifying udev rules
-- Users should be in the input group to avoid needing sudo for these operations
-- optional [`gdm-settings`](https://github.com/gdm-settings/gdm-settings) for login screen
+- optional [`gdm-settings`](https://github.com/gdm-settings/gdm-settings) to apply settings to login screen
 
 ## Installation
 
@@ -92,7 +92,7 @@ python3 gptouch.py
 
 ## Notes
 - Gnome 48 introduces its own xrand-like tool:[`gdctl`](https://gitlab.gnome.org/GNOME/mutter/-/merge_requests/4190)
-- expect this tool to be non-functinal (maybe obsolete) on Gnome 48 release 
+- `gdctl` should be the way to go for the future, but I am lazy and `gnome-randr` amazingly still works on Gnome 48 (x86_64 & arm64, deb & arch)
 - Users should be in the `input` group to avoid needing `sudo` for `libinnput`.
 - The script requires `sudo` privileges to modify udev rules.
 - Use [`gdm-settings`](https://github.com/gdm-settings/gdm-settings) to apply rotation on login screen
