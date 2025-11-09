@@ -1,113 +1,93 @@
-# Touchscreen Rotation and Calibration Matrix Script for Gnome (<= 48, see Notes)
+## 🖥️ Touchscreen Rotation and Calibration Script for GNOME (Wayland)
 
-This script provides a terminal interface to rotate the display and calibrate the touchscreen input matrix on Wayland ~~and X11~~ environments automatically.
+This Python script offers a terminal interface to automatically rotate the display and calibrate the touchscreen input matrix in **Wayland environments**. It uses the modern **`gdctl`** utility (GNOME $\geq 48$) for persistent display configuration and `libinput` for the touchscreen matrix.
 
-## Requirements
+-----
 
-- Python 3
-- [`gnome-randr`](https://github.com/maxwellainatchi/gnome-randr-rust) and `libinput` (for Wayland)
-- Users should be in the input group to avoid needing sudo for `libinput` operations
-- `sudo` privileges for modifying udev rules
-- optional [`gdm-settings`](https://github.com/gdm-settings/gdm-settings) to apply settings to login screen
+## 🛠️ Requirements
 
-## Installation
+The script is strictly intended for use under **Wayland** (GNOME).
 
-### Debian-based Distributions
+### 🛑 Required Dependencies
 
-1. **Install Python**:
-    ```bash
-    sudo apt-get install python3
-    ```
+  * **Python 3**
+  * **`gdctl`** (Part of GNOME; for persistent display rotation)
+  * **`libinput`** (for Wayland input management and calibration)
+  * The user must be in the **`input` group** (see Installation).
+  * `sudo` permissions for writing udev rules.
 
-2. **Install Wayland Dependencies**
-    ```bash
-    sudo apt-get install libinput-tools
-    ```
+### 💡 Optional Dependency
 
-3. **Install `gnome-randr`**:
-    - `gnome-randr` can be installed using Cargo, the Rust package manager. First, ensure you have Rust and Cargo installed. Follow the instructions at [rust-lang.org](https://www.rust-lang.org/tools/install), e.g.:
-       ```bash
-        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-        ```
-       
-    - Once Rust and Cargo are installed, you can install `gnome-randr` by running:
-      ```bash
-      cargo install gnome-randr
-      ```      
-4. **Add User to the input group**:
-    ```bash
-      sudo usermod -a -G input USERNAME
-    ```
-   
-### Arch-based Distributions
+  * **`gdm-settings`**: A tool to apply the display settings (rotation) set by `gdctl` to the **GDM (GNOME Display Manager) login screen**. The script checks for its presence and provides a specific hint.
 
-1. **Install Python**:
-    ```bash
-    sudo pacman -S python
-    ```
+-----
 
-2. **Install Wayland Dependencies**
-    ```bash
-    sudo pacman -S libinput
-    ```
+## 📥 Installation
 
-3. **Install `gnome-randr`**:
-    - `gnome-randr` can be installed using Cargo, the Rust package manager. First, ensure you have Rust and Cargo installed. Follow the instructions at [rust-lang.org](https://www.rust-lang.org/tools/install), e.g.:
-       ```bash
-        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-        ```
-       
-    - Once Rust and Cargo are installed, you can install `gnome-randr` by running:
-      ```bash
-      cargo install gnome-randr
-      ```
-4. **Add User to the input group**:
-      ```bash
-      sudo usermod -aG input USERNAME
-      ```
-   
-## Usage
+### 1\. Install Dependencies
+
+#### Debian-based Distributions
+
+```bash
+# Required packages
+sudo apt-get install python3 libinput-tools
+
+# Optional dependency (installation method may vary)
+# Install gdm-settings if desired.
+```
+
+#### Arch-based Distributions
+
+```bash
+# Required packages
+sudo pacman -S python libinput
+
+# Optional dependency
+# gdm-settings can typically be installed via the AUR (e.g., using yay).
+# yay -S gdm-settings 
+```
+
+### 2\. Add User to the `input` Group
+
+To execute `libinput` operations without needing `sudo`, add your user to the `input` group. 
+
+**A re-login is required.**
+
+```bash
+sudo usermod -a -G input YOUR_USERNAME
+```
+
+-----
+
+## 💡 Usage
 
 Run the script using Python:
+
 ```bash
 python3 gptouch.py
 ```
 
-### Script Flow
-
-1. The script checks for the required dependencies (~~`xrandr`, `xinput`,~~ `gnome-randr`, and `libinput`).
-2. ~~It determines the active display output based on the session type (X11 or Wayland).~~
-3. It identifies the connected touchscreen device.
-4. It prompts the user to select the desired screen orientation.
-5. It applies the selected screen orientation.
-6. It updates the touchscreen calibration matrix and writes it to the udev rules, using `sudo`.
-7. It prompts the user to reboot the system to apply the changes.
-
 ### Orientation Options
 
-- 1: Landscape (normal)
-- 2: Portrait (right side up)
-- 3: Portrait (left side up)
-- 4: Inverted (upside down)
+The script will prompt you to choose one of the following orientations. The display rotation and touchscreen calibration matrix will be set simultaneously.
 
-## Notes
-- Gnome 48 introduces its own xrand-like tool:[`gdctl`](https://gitlab.gnome.org/GNOME/mutter/-/merge_requests/4190)
-- `gdctl` should be the way to go for the future, but I am lazy and `gnome-randr` amazingly still works on Gnome 48 (x86_64 & arm64, deb & arch)
-- Users should be in the `input` group to avoid needing `sudo` for `libinnput`.
-- The script requires `sudo` privileges to modify udev rules.
-- Use [`gdm-settings`](https://github.com/gdm-settings/gdm-settings) to apply rotation on login screen
+1.  **Landscape** (`normal`)
+2.  **Portrait** (`right` side up)
+3.  **Portrait** (`left` side up)
+4.  **Inverted** (`upside down`)
 
-### Troubleshooting
+### Script Flow Highlights
 
-- **Dependency Errors**: Ensure all required packages are installed.
-- **Display Not Found**: Verify that your display is correctly connected and detected by the system.
-- **Touchscreen Device Not Found**: Check the connections and ensure user is in input group.
+1.  Checks for required and optional dependencies (`gdctl`, `libinput`, `gdm-settings`).
+2.  Determines the active display connector name (e.g., `HDMI-1`) via **`gdctl show`**.
+3.  Applies the rotation using `gdctl set --persistent --primary --transform [ANGLE]`, ensuring **desktop rotation is saved permanently.**
+4.  Writes the corresponding calibration matrix to the udev rules file (`/etc/udev/rules.d/...`).
+5.  A **specific hint** is provided:
+      * If `gdm-settings` is installed, the user is reminded to use it to set the rotation on the **GDM login screen** (which is separate from the desktop session).
+6.  Prompts for a reboot to apply the new udev rules.
 
+-----
 
-## License
+## 📜 License
 
 This project is licensed under the MIT License.
-
-## Acknowledgements
-
-- [`gnome-randr`](https://github.com/maxwellainatchi/gnome-randr-rust) and `libinput` are used for Wayland display and input management.
