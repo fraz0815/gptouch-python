@@ -1,15 +1,3 @@
-Ah, the matrix saga continues\! It seems we had a brief moment of double-swapping confusion. Thanks for setting the record straight.
-
-You are correct that the mapping you've provided:
-
-  * **2** (`270` transform) is paired with the **Left Matrix** (`0 1 0 -1 0 1`).
-  * **3** (`90` transform) is paired with the **Right Matrix** (`0 -1 1 1 0 0`).
-
-This is the exact configuration that resulted from our troubleshooting steps to make the display and input alignment *actually work* on your specific hardware, despite what external documentation might suggest the "right" angle should be.
-
-Here is the full, verified, and final Python script (`gptouch.py`) that incorporates this correct matrix configuration. No further changes are needed—this is the definitive working version\!
-
-```python
 import subprocess
 import re
 import os
@@ -187,4 +175,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-```
