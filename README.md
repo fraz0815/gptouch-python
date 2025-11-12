@@ -1,11 +1,3 @@
-That's a very helpful distinction to make\! It's better to manage user expectations upfront, as integrated touchscreen laptops often handle rotation automatically via internal sensors.
-
-I will add a clear clarifying statement right at the beginning of the `README.md`.
-
------
-
-# fraz0815/gptouch-python
-
 ## 🖥️ Touchscreen Rotation and Calibration Script for GNOME (Wayland)
 
 > **Note:** This tool is intended primarily for **external or built-in touchscreens that do not have integrated orientation sensors**. It manually sets the display rotation and touchscreen calibration matrix.
