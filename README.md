@@ -27,7 +27,9 @@ The script is strictly intended for use under **Wayland** (GNOME).
 | Distribution Type | Command |
 | :--- | :--- |
 | **Debian/Ubuntu** | `sudo apt-get install python3 libinput-tools` |
-| **Arch/Fedora** | `sudo pacman -S python libinput` |
+| **Arch** | `sudo pacman -S python libinput` |
+| **Fedora** | `sudo dnf install python3 libinput` |
+
 
 ### 2\. Add User to the `input` Group
 
@@ -42,45 +44,45 @@ To execute `libinput` operations without needing `sudo`, add your user to the `i
 
 ## 💡 Usage
 
-Run the script using Python:
+Clone the repository and run the script:
 
 ```bash
+git clone https://github.com/fraz0815/gptouch-python.git
+cd gptouch-python
 python3 gptouch.py
 ```
 
-### Orientation Options
+### Interactive Mode
 
-The script will prompt you to choose one of the following orientations. Both the display rotation (`gdctl`) and the touchscreen calibration matrix will be set simultaneously and persistently.
+Simply run `python3 gptouch.py`.
 
-1.  **Landscape** (`normal`)
-2.  **Portrait** (`right` side up)
-3.  **Portrait** (`left` side up)
-4.  **Inverted** (`upside down`)
+### Command Line Arguments (Non-Interactive)
 
-### Script Flow Highlights
+You can use flags to skip prompts, making it perfect for mapping to keyboard shortcuts or rotation scripts.
 
-1.  Checks for required dependencies (`gdctl`, `libinput`).
-2.  Determines the active display connector name (e.g., `HDMI-1`) via **`gdctl show`**.
-3.  Applies the rotation using `gdctl set --persistent --primary --transform [ANGLE]`, ensuring **desktop rotation is saved permanently.**
-4.  Writes the corresponding calibration matrix to the udev rules file (`/etc/udev/rules.d/...`).
-5.  Provides instructions for updating the GDM login screen configuration.
-6.  Prompts for a reboot to apply the new udev rules.
+```bash
+-o, --orientation 1: Landscape, 2: Portrait (Right), 3: Portrait (Left), 4: Inverted
+--skip-reboot
+--skip-gdm
+```
 
------
+### How it Works
 
-## 🔒 GDM Login Screen Rotation (Optional Step)
+1. Detection: Identifies the active monitor via `gdctl show`  and the touchscreen device path via `libinput`.
 
-The rotation set by `gdctl set --persistent` saves the configuration for your **user session**. The **GDM login screen** uses a separate configuration file (`monitors.xml`). If the login screen is not rotated after applying the script, use the following steps to update GDM's configuration file.
+2. Rotation: Uses `gdctl set --transform ...` to rotate the visual display.
 
-After the script completes, you must manually copy your session's configuration file to the GDM path to ensure the login screen matches your desktop rotation. **Choose only the path that applies to your system:**
+3. Calibration: Uses the correct LIBINPUT_CALIBRATION_MATRIX and writes a udev rule to `/etc/udev/rules.d/99-touchscreen-orientation.rules`.
 
-| GNOME Version | Distribution Type | Command |
-| :--- | :--- | :--- |
-| **GNOME 49+** (Recommended) | Cross-Distro Standard | `sudo cp ~/.config/monitors.xml /etc/xdg/monitors.xml && sudo chmod 644 /etc/xdg/monitors.xml` |
-| **GNOME 48** | Arch/Fedora-like | `sudo cp ~/.config/monitors.xml /var/lib/gdm/.config/monitors.xml` |
-| **GNOME 48** | Debian/Ubuntu-like | `sudo cp ~/.config/monitors.xml /var/lib/gdm3/.config/monitors.xml` |
+4. Hot-Reload:
 
------
+* Reloads udev rules (`udevadm control --reload`).
+* Rebinds the Driver: Temporarily unbinds and rebinds the touchscreen kernel driver to force it to read the new calibration matrix instantly.
+
+5. GDM Sync:
+
+   Checks if `~/.config/monitors.xml` exists and copies it to the system-wide GDM configuration path (e.g., `/var/lib/gdm/.config/` or `/etc/xdg/` depending on GNOME version).
+
 
 ## 📜 License
 
