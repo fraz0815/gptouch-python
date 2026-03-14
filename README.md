@@ -102,7 +102,7 @@ Download extensions from release page and install via
 3. Logout & Login
 4. Enable extension
    ```bash
-   gnome-extensions enable gptouch@fraz0815.github.com
+   gnome-extensions enable gptouch@fraz0815.de
 
 ## 📜 License
 
