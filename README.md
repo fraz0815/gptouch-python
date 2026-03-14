@@ -90,7 +90,7 @@ This repository includes a GNOME Shell Extension that adds a convenient drop-dow
 ### Installation from zip
 Download extensions from release page and install via
    ```bash
-   gnome-extensions install gptouch@fraz0815.gnome-extensions install gptouch@fraz0815.de.shell-extension.zip
+   gnome-extensions install gptouch@fraz0815.de.shell-extension.zip
    ```
 ### Installation via Source
 1. Copy the extension folder to your GNOME extensions directory:
