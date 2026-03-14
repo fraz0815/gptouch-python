@@ -1,0 +1,8 @@
+{
+  "name": "GpTouch",
+  "description": "Automatic display and touchscreen rotation.",
+  "uuid": "gptouch@fraz0815.de",
+  "shell-version": [
+    "49"
+  ]
+}
