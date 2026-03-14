@@ -83,6 +83,26 @@ You can use flags to skip prompts, making it perfect for mapping to keyboard sho
 
    Checks if `~/.config/monitors.xml` exists and copies it to the system-wide GDM configuration path (e.g., `/var/lib/gdm/.config/` or `/etc/xdg/` depending on GNOME version).
 
+## 🧩 GNOME Shell Extension (Optional)
+
+This repository includes a GNOME Shell Extension that adds a convenient drop-down menu to your top panel for quick rotations.
+
+### Installation from zip
+Download extensions from release page and install via
+   ```bash
+   gnome-extensions install gptouch@fraz0815.gnome-extensions install gptouch@fraz0815.de.shell-extension.zip
+   ```
+### Installation via Source
+1. Copy the extension folder to your GNOME extensions directory:
+   ```bash
+   cp -r gnome-extension/gptouch@fraz0815.de ~/.local/share/gnome-shell/extensions/
+2. Copy the main Python script into the newly created extension folder:
+   ```bash
+   cp gptouch.py ~/.local/share/gnome-shell/extensions/gptouch@fraz0815.de/
+3. Logout & Login
+4. Enable extension
+   ```bash
+   gnome-extensions enable gptouch@fraz0815.github.com
 
 ## 📜 License
 
