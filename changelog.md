@@ -1,5 +1,7 @@
 🚀 Added
 
+GNOME Shell Extension (3/26)
+
 Native gdctl Integration: The script now uses the gdctl tool introduced in GNOME 48 for display management.
 
 Hot-Reloading: Implementation of a "driver-rebind" mechanism. The script restarts the kernel driver for the touchscreen so that calibration changes take effect instantly (no reboot required anymore).
