@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Configuration
-UUID="gptouch@fraz0815.github.com"
+UUID="gptouch@fraz0815.de"
 EXT_DIR="$HOME/.local/share/gnome-shell/extensions/$UUID"
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
