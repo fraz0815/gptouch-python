@@ -17,6 +17,7 @@ The script is strictly intended for use under **Wayland** (GNOME).
   * **`libinput`** (for Wayland input management and calibration)
   * User must be in the **`input` group** (see Installation).
   * `sudo` permissions for writing udev rules.
+  * `gnome-terminal` or `gnome-console` (aka `kgx`)
 
 -----
 
@@ -83,26 +84,35 @@ You can use flags to skip prompts, making it perfect for mapping to keyboard sho
 
    Checks if `~/.config/monitors.xml` exists and copies it to the system-wide GDM configuration path (e.g., `/var/lib/gdm/.config/` or `/etc/xdg/` depending on GNOME version).
 
-## 🧩 GNOME Shell Extension (Optional)
 
-This repository includes a GNOME Shell Extension that adds a convenient drop-down menu to your top panel for quick rotations.
+## 🧩 GNOME Shell Extension (Optional but Recommended)
 
-### Installation from zip
-Download extensions from release page and install via
-   ```bash
-   gnome-extensions install gptouch@fraz0815.de.shell-extension.zip
-   ```
-### Installation via Source
-1. Copy the extension folder to your GNOME extensions directory:
-   ```bash
-   cp -r gnome-extension/gptouch@fraz0815.de ~/.local/share/gnome-shell/extensions/
-2. Copy the main Python script into the newly created extension folder:
-   ```bash
-   cp gptouch.py ~/.local/share/gnome-shell/extensions/gptouch@fraz0815.de/
-3. Logout & Login
-4. Enable extension
-   ```bash
-   gnome-extensions enable gptouch@fraz0815.de
+This repository includes a GNOME Shell Extension that adds a convenient drop-down menu to your top panel for quick display and touchscreen rotations with a single click.
+
+We provide an automated script to install and enable the extension on your system.
+
+Open your terminal and navigate to the cloned repository:
+
+```bash
+cd gptouch-python
+```
+
+Make the installation script executable:
+
+```bash
+chmod +x install.sh
+```
+
+Run the installer:
+
+```bash
+./install.sh
+```
+
+Important (Wayland): GNOME Shell does not allow hot-reloading extensions under Wayland. You must log out and log back in for the changes to take effect.
+
+Once logged back in, the extension will be active and you will see the rotation icon in your top panel!
+
 
 ## 📜 License
 
