@@ -21,9 +21,9 @@ class GpTouchMenu extends panelMenu.Button {
 
         // Menüeinträge für die 4 Orientierungen erstellen
         this._addOrientationItem('Landscape (Normal)', 1);
-        this._addOrientationItem('Portrait (Rechts)', 2);
-        this._addOrientationItem('Portrait (Links)', 3);
-        this._addOrientationItem('Inverted (Kopfstand)', 4);
+        this._addOrientationItem('Portrait (Right side up)', 2);
+        this._addOrientationItem('Portrait (Left side up)', 3);
+        this._addOrientationItem('Inverted (Inverted)', 4);
     }
 
     _addOrientationItem(label, orientationValue) {
