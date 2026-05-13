@@ -1,7 +1,7 @@
 {
   "name": "GpTouch",
   "description": "Touchscreen rotation for GNOME 48+",
-  "uuid": "gptouch@fraz0815.github.com",
+  "uuid": "gptouch@fraz0815.de",
   "shell-version": ["48", "49", "50"],
   "url": "https://github.com/fraz0815/gptouch-python"
 }
