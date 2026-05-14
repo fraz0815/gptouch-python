@@ -1,3 +1,10 @@
+5/14/2026
+
+Updated metadata to 50
+
+added install.sh for gnome-extension
+
+
 🚀 Added
 
 GNOME Shell Extension (3/26)
