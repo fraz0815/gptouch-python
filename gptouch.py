@@ -51,24 +51,29 @@ def get_touchscreen_device_wayland() -> Tuple[str, str]:
         device_blocks = result.stdout.split("\n\n")
         
         for block in device_blocks:
-            # Check if it is a touchscreen
-            if re.search(r'Device:.*Touchscreen', block, re.IGNORECASE) or "Capacity: touch" in block:
+            # We strictly look for the Capabilities line and ensure it contains "touch"
+            # It must NOT be just a "tablet" (Stylus) or "pointer" (Mouse emulation)
+            cap_match = re.search(r'Capabilities:\s+(.*)', block)
+            if cap_match:
+                capabilities = cap_match.group(1).lower()
                 
-                # Extract Name
-                name_match = re.search(r'Device:\s+(.+)', block)
-                # Extract Kernel Node
-                kernel_match = re.search(r'Kernel:\s+(.+)', block)
-                
-                if name_match and kernel_match:
-                    name = name_match.group(1).strip()
-                    node = kernel_match.group(1).strip()
-                    return name, node
+                # Check if "touch" is explicitly listed in the capabilities
+                if "touch" in capabilities:
+                    # Extract Name
+                    name_match = re.search(r'Device:\s+(.+)', block)
+                    # Extract Kernel Node
+                    kernel_match = re.search(r'Kernel:\s+(.+)', block)
+                    
+                    if name_match and kernel_match:
+                        name = name_match.group(1).strip()
+                        node = kernel_match.group(1).strip()
+                        return name, node
 
-        print("❌ No touchscreen device found via libinput.")
+        print("[ERROR] No touchscreen device found via libinput.")
         sys.exit(1)
 
     except subprocess.CalledProcessError as e:
-        print(f"❌ Failed to list devices: {e}")
+        print(f"[ERROR] Failed to list devices: {e}")
         sys.exit(1)
 
 def get_calibration_matrix(choice: int) -> Tuple[Optional[str], Optional[str]]:
