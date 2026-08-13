@@ -1,3 +1,8 @@
+8/14/2026
+
+Refactor touchscreen detection, should be more reliable
+
+
 5/14/2026
 
 Updated metadata to 50
