@@ -36,9 +36,10 @@ The script is strictly intended for use under **Wayland** (GNOME 48 or newer).
 
 To execute `libinput` operations without needing `sudo`, add your user to the `input` group. **A re-login is required.**
 
-```bash
-sudo usermod -aG input $USER
-```
+| Distribution | Command |
+| :--- | :--- |
+| **Debian / Ubuntu** | `sudo usermod -a -G input YOUR_USERNAME` |
+| **Arch / Fedora** | `sudo usermod -aG input YOUR_USERNAME` |
 
 ---
 
@@ -47,7 +48,7 @@ sudo usermod -aG input $USER
 Clone the repository and run the script:
 
 ```bash
-git clone [https://github.com/fraz0815/gptouch-python.git](https://github.com/fraz0815/gptouch-python.git)
+git clone https://github.com/fraz0815/gptouch-python.git
 cd gptouch-python
 python3 gptouch.py
 ```
@@ -60,13 +61,10 @@ Simply run `python3 gptouch.py` and follow the on-screen prompts.
 
 You can use flags to skip prompts, making it suitable for mapping to keyboard shortcuts or custom scripts:
 
-```text
--o, --orientation {1,2,3,4}   1: Landscape (Normal)
-                              2: Portrait (Right side up)
-                              3: Portrait (Left side up)
-                              4: Inverted (Upside down)
---skip-reboot                 Skip the reboot prompt if hot-reload fails
---skip-gdm                    Skip the GDM login screen configuration prompt
+```bash
+-o, --orientation 1: Landscape, 2: Portrait (Right), 3: Portrait (Left), 4: Inverted
+--skip-reboot
+--skip-gdm
 ```
 
 ### How it Works
@@ -77,26 +75,37 @@ You can use flags to skip prompts, making it suitable for mapping to keyboard sh
 4. **Hot-Reload:**
    - Reloads udev rules (`udevadm control --reload-rules`).
    - Temporarily unbinds and rebinds the touchscreen kernel driver in `sysfs` to apply the new calibration matrix immediately without rebooting.
-5. **GDM Sync:** Checks if `~/.config/monitors.xml` exists and optionally copies it to the system-wide GDM configuration path (`/etc/xdg/monitors.xml` on GNOME 49+, or `/var/lib/gdm/.config/` on GNOME 48).
+5. **GDM Sync:** Checks if `~/.config/monitors.xml` exists and optionally copies it to the system-wide GDM configuration path (`/etc/xdg/monitors.xml` on GNOME 49+, or `/var/lib/gdm/.config/` / `/var/lib/gdm3/.config/` on GNOME 48).
 
 ---
 
-## GNOME Shell Extension (Optional)
+## GNOME Shell Extension (Optional but Recommended)
 
-This repository includes a GNOME Shell Extension (compatible with GNOME 48 - 51) that adds a drop-down menu to the top panel for quick display and touchscreen rotations.
+This repository includes a GNOME Shell Extension (compatible with GNOME 48 - 51) that adds a convenient drop-down menu to your top panel for quick display and touchscreen rotations with a single click.
 
-To install the extension, run the included installer script from the repository root:
+We provide an automated script to install and enable the extension on your system.
+
+Open your terminal and navigate to the cloned repository:
+
+```bash
+cd gptouch-python
+```
+
+Make the installation script executable:
 
 ```bash
 chmod +x install.sh
+```
+
+Run the installer:
+
+```bash
 ./install.sh
 ```
 
-**Important (Wayland):** GNOME Shell does not allow hot-reloading newly installed extensions under Wayland. You must **log out and log back in** for the changes to take effect. If the icon does not appear automatically after logging back in, enable it via:
+**Important (Wayland):** GNOME Shell does not allow hot-reloading extensions under Wayland. You must log out and log back in for the changes to take effect.
 
-```bash
-gnome-extensions enable gptouch@fraz0815.de
-```
+Once logged back in, the extension will be active and you will see the rotation icon in your top panel!
 
 ---
 
