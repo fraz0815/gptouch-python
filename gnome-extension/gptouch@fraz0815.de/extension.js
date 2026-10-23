@@ -1,19 +1,21 @@
-import St from 'gi://St';
+import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
+import St from 'gi://St';
+
 import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js';
-import * as panelMenu from 'resource:///org/gnome/shell/ui/panelMenu.js';
-import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
+import * as PanelMenu from 'resource:///org/gnome/shell/ui/panelMenu.js';
+import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 
 const GpTouchMenu = GObject.registerClass(
-class GpTouchMenu extends panelMenu.Button {
+class GpTouchMenu extends PanelMenu.Button {
     _init(scriptPath) {
         super._init(0.0, 'GpTouch');
-        this.scriptPath = scriptPath;
+        this._scriptPath = scriptPath;
 
-        // Ein passendes Icon für Rotation aus dem System-Theme laden
-        let icon = new St.Icon({
+        // Passendes Icon für Rotation aus dem System-Theme laden
+        const icon = new St.Icon({
             icon_name: 'rotation-allowed-symbolic',
             style_class: 'system-status-icon',
         });
@@ -27,50 +29,62 @@ class GpTouchMenu extends panelMenu.Button {
     }
 
     _addOrientationItem(label, orientationValue) {
-        let item = new PopupMenu.PopupMenuItem(label);
-        item.connect('activate', () => {
+        // addAction ist die kompakte Kurzform für PopupMenuItem + connect('activate')
+        this.menu.addAction(label, () => {
             this._rotate(orientationValue);
         });
-        this.menu.addMenuItem(item);
     }
 
-  _rotate(orientationValue) {
+    _rotate(orientationValue) {
         try {
-            let terminalCmd = '';
-            
-            // GLib prüft, ob die Programme im System-Pfad existieren (kgx wird bevorzugt)
-            if (GLib.find_program_in_path('kgx')) {
-                // kgx nutzt '-e', um einen Befehl beim Start auszuführen
-                terminalCmd = `kgx -e bash -c "python3 ${this.scriptPath} -o ${orientationValue} --skip-reboot"`;
+            const pythonArgs = [
+                'python3',
+                this._scriptPath,
+                '-o',
+                String(orientationValue),
+                '--skip-reboot',
+            ];
+
+            let argv = null;
+
+            // Prüft moderne & klassische GNOME-Terminals der Reihe nach
+            if (GLib.find_program_in_path('ptyxis')) {
+                argv = ['ptyxis', '--', ...pythonArgs];
+            } else if (GLib.find_program_in_path('kgx')) {
+                argv = ['kgx', '--', ...pythonArgs];
             } else if (GLib.find_program_in_path('gnome-terminal')) {
-                // gnome-terminal nutzt stattdessen '--'
-                terminalCmd = `gnome-terminal -- bash -c "python3 ${this.scriptPath} -o ${orientationValue} --skip-reboot"`;
+                argv = ['gnome-terminal', '--', ...pythonArgs];
+            } else if (GLib.find_program_in_path('xdg-terminal-exec')) {
+                argv = ['xdg-terminal-exec', ...pythonArgs];
             } else {
-                console.error("GpTouch Fehler: Weder kgx noch gnome-terminal wurden auf dem System gefunden!");
+                const msg = 'Kein unterstütztes Terminal (ptyxis, kgx, gnome-terminal) gefunden!';
+                console.error(`GpTouch Fehler: ${msg}`);
+                Main.notifyError('GpTouch Fehler', msg);
                 return;
             }
 
-            GLib.spawn_command_line_async(terminalCmd);
-            console.log(`GpTouch Extension: Ausgeführt (inkl. GDM) -> ${terminalCmd}`);
+            // Startet den Prozess sicher ohne Shell-String-Parsing
+            const proc = Gio.Subprocess.new(argv, Gio.SubprocessFlags.NONE);
+            proc.wait_async(null, null);
+
+            console.log(`GpTouch Extension: Ausgeführt -> ${argv.join(' ')}`);
         } catch (e) {
             console.error(`GpTouch Extension Fehler: ${e.message}`);
+            Main.notifyError('GpTouch Fehler', e.message);
         }
     }
 });
 
 export default class GpTouchExtension extends Extension {
     enable() {
-        // Sucht automatisch den absoluten Pfad zur gptouch.py innerhalb des Extension-Ordners
-        const scriptPath = this.dir.get_child('gptouch.py').get_path(); 
-        
+        const scriptPath = this.dir.get_child('gptouch.py').get_path();
+
         this._indicator = new GpTouchMenu(scriptPath);
         Main.panel.addToStatusArea(this.uuid, this._indicator);
     }
 
     disable() {
-        if (this._indicator) {
-            this._indicator.destroy();
-            this._indicator = null;
-        }
+        this._indicator?.destroy();
+        this._indicator = null;
     }
 }
