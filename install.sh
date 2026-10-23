@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 # Configuration
 UUID="gptouch@fraz0815.de"
@@ -11,43 +12,57 @@ echo "-------------------------------------------------------"
 
 # 1. System Check: GNOME Version / gdctl
 if ! command -v gdctl &> /dev/null; then
-    echo "❌ Error: 'gdctl' command not found."
-    echo "   This extension requires GNOME 48 or newer (Wayland)."
+    echo "[ERROR] 'gdctl' command not found."
+    echo "        This extension requires GNOME 48 or newer (Wayland)."
     exit 1
 fi
 
-# 2. System Check: GNOME Console (kgx)
-if ! command -v kgx &> /dev/null; then
-    echo "⚠️  Warning: 'kgx' (GNOME Console) not found."
-    echo "   The extension is pre-configured to use 'kgx'."
-    echo "   Please install 'kgx' or modify extension.js to use your preferred terminal."
+# 2. System Check: Supported Terminal Emulator
+if ! command -v ptyxis &> /dev/null && \
+   ! command -v kgx &> /dev/null && \
+   ! command -v gnome-terminal &> /dev/null && \
+   ! command -v xdg-terminal-exec &> /dev/null; then
+    echo "[WARN] No supported terminal emulator found (ptyxis, kgx, gnome-terminal)."
+    echo "       Please install one of them so the extension can run the calibration script."
 fi
 
-# 3. Prepare target directory
-echo "📁 Creating directory: $EXT_DIR"
+# 3. System Check: User in 'input' group
+if ! id -nG "$USER" | grep -qw "input"; then
+    echo "[WARN] User '$USER' is not in the 'input' group."
+    echo "       Run: sudo usermod -aG input $USER (requires re-login)."
+fi
+
+# 4. Prepare target directory
+echo "[INFO] Creating directory: $EXT_DIR"
 mkdir -p "$EXT_DIR"
 
-# 4. Copy files
-echo "📝 Copying extension files..."
+# 5. Copy files
+echo "[INFO] Copying extension files..."
 if [ -d "$REPO_DIR/gnome-extension/$UUID" ]; then
     cp "$REPO_DIR/gnome-extension/$UUID/extension.js" "$EXT_DIR/"
     cp "$REPO_DIR/gnome-extension/$UUID/metadata.json" "$EXT_DIR/"
 else
-    echo "❌ Error: Directory 'gnome-extension/$UUID' not found!"
+    echo "[ERROR] Directory 'gnome-extension/$UUID' not found!"
     exit 1
 fi
 
-echo "🐍 Copying main script (gptouch.py)..."
+echo "[INFO] Copying main script (gptouch.py)..."
 cp "$REPO_DIR/gptouch.py" "$EXT_DIR/"
+chmod +x "$EXT_DIR/gptouch.py"
 
-# 5. Enable extension
-echo "⚙️  Enabling extension..."
-gnome-extensions enable "$UUID" 2>/dev/null || echo "   (Extension will be enabled after the next login)"
+# 6. Enable extension
+echo "[INFO] Enabling extension..."
+if gnome-extensions enable "$UUID" 2>/dev/null; then
+    echo "[OK] Extension enabled."
+else
+    echo "[INFO] Extension registered. It will be available after the next login."
+fi
 
 echo "-------------------------------------------------------"
-echo "✅ Installation completed successfully!"
+echo "[OK] Installation completed successfully."
 echo "-------------------------------------------------------"
-echo "IMPORTANT: Since you are using Wayland, you must log"
-echo "out and log back in for GNOME to fully load the new"
-echo "extension and display the icon in your top panel."
+echo "IMPORTANT: Under Wayland, GNOME Shell requires you to"
+echo "log out and log back in to load newly installed"
+echo "extensions. Afterwards, make sure it is enabled via:"
+echo "  gnome-extensions enable $UUID"
 echo "-------------------------------------------------------"
